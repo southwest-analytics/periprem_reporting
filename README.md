@@ -104,21 +104,23 @@ PERIPrem Data Processing and Reporting
 
 **Conditional Formatting:** 
 
- - Grey if 
-   - `=AND(A10="27 - 27+6",C10="Single", B10="<1500g")`
-   - `=AND(A10="27 - 27+6",C10="Single", B10=">1500g")`
-   - `=AND(A10="28 - 29+6",C10="Single", B10="<1500g")`
-   - `=AND(A10="28 - 29+6",C10="Single", B10=">1500g")`
-   - `=AND(A10="30 - 31+6",C10="Single", B10="<1500g")`
-   - `=AND(A10="30 - 31+6",C10="Single", B10=">1500g")`
-   - `=AND(A10="32 - 33+6",C10="Single", B10="<1500g")`
-   - `=AND(A10="32 - 33+6",C10="Single", B10=">1500g")`
-   - `=AND(A10="28 - 29+6",C10="Multiple", B10="<1500g")`
-   - `=AND(A10="28 - 29+6",C10="Multiple", B10=">1500g")`
-   - `=AND(A10="30 - 31+6",C10="Multiple", B10="<1500g")`
-   - `=AND(A10="30 - 31+6",C10="Multiple", B10=">1500g")`
-   - `=AND(A10="32 - 33+6",C10="Multiple", B10="<1500g")`
-   - `=AND(A10="32 - 33+6",C10="Multiple", B10=">1500g")`
+ERROR this column should not have conditional formatting
+
+> - Grey if 
+    - `=AND(A10="27 - 27+6",C10="Single", B10="<1500g")`
+    - `=AND(A10="27 - 27+6",C10="Single", B10=">1500g")`
+    - `=AND(A10="28 - 29+6",C10="Single", B10="<1500g")`
+    - `=AND(A10="28 - 29+6",C10="Single", B10=">1500g")`
+    - `=AND(A10="30 - 31+6",C10="Single", B10="<1500g")`
+    - `=AND(A10="30 - 31+6",C10="Single", B10=">1500g")`
+    - `=AND(A10="32 - 33+6",C10="Single", B10="<1500g")`
+    - `=AND(A10="32 - 33+6",C10="Single", B10=">1500g")`
+    - `=AND(A10="28 - 29+6",C10="Multiple", B10="<1500g")`
+    - `=AND(A10="28 - 29+6",C10="Multiple", B10=">1500g")`
+    - `=AND(A10="30 - 31+6",C10="Multiple", B10="<1500g")`
+    - `=AND(A10="30 - 31+6",C10="Multiple", B10=">1500g")`
+    - `=AND(A10="32 - 33+6",C10="Multiple", B10="<1500g")`
+    - `=AND(A10="32 - 33+6",C10="Multiple", B10=">1500g")`
  - White if cell contains a value
 
 ---
@@ -133,9 +135,13 @@ PERIPrem Data Processing and Reporting
 
 **Conditional Formatting:** 
 
+ERROR this column should only have the simple conditional formatting
+
  - Grey if 
    - `=$G10="No"`
-   - `=AND(A10="27 - 27+6",C10="Single", B10="<1500g")`
+ - White if cell contains a value
+
+>  - `=AND(A10="27 - 27+6",C10="Single", B10="<1500g")`
    - `=AND(A10="27 - 27+6",C10="Single", B10=">1500g")`
    - `=AND(A10="28 - 29+6",C10="Single", B10="<1500g")`
    - `=AND(A10="28 - 29+6",C10="Single", B10=">1500g")`
@@ -149,7 +155,6 @@ PERIPrem Data Processing and Reporting
    - `=AND(A10="30 - 31+6",C10="Multiple", B10=">1500g")`
    - `=AND(A10="32 - 33+6",C10="Multiple", B10="<1500g")`
    - `=AND(A10="32 - 33+6",C10="Multiple", B10=">1500g")`
- - White if cell contains a value
 
 ---
 
@@ -162,7 +167,9 @@ PERIPrem Data Processing and Reporting
 
 **Conditional Formatting:** 
 
- - Grey if 
+ERROR this column should not have conditional formatting
+
+\ - Grey if 
    - `=$G10="No"`
    - `=AND(A10="27 - 27+6",C10="Single", B10="<1500g")`
    - `=AND(A10="27 - 27+6",C10="Single", B10=">1500g")`
@@ -191,7 +198,9 @@ PERIPrem Data Processing and Reporting
 
 **Conditional Formatting:** 
 
- - Grey if 
+ERROR this column should not have conditional formatting
+
+\ - Grey if 
    - `=$G10="No"`
    - `=$I10="No"`
    - `=AND(A10="27 - 27+6",C10="Single", B10="<1500g")`
