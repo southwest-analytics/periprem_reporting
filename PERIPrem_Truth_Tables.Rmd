@@ -1,0 +1,383 @@
+---
+title: "PERIPrem Truth Tables"
+author: "Richard Blackwell"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(flextable)
+library(officer)
+
+source('periprem_reporting_functions.R')
+```
+
+### Gestation field
+
+```{r tt_gestation, echo = FALSE}
+df_tt <- data.frame(gestation = c('<26+6', '27 - 27+6', '28 - 29+6', '30 - 31+6', '32 - 33+6', NA)) %>%
+  mutate(valid = fnCheck_gestation(.))
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    gestation = 'Gestation Length',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .5) %>%
+  hline(part = "body", border = std_border) %>%
+#  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 2, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 2, color = 'white')
+ft
+```
+### Weight field
+
+```{r tt_weight, echo = FALSE}
+df_tt <- data.frame(weight = c('<800g', '<1500g', '>1500g', NA)) %>%
+  mutate(valid = fnCheck_weight(.))
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    weight = 'Birth Weight',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .5) %>%
+  hline(part = "body", border = std_border) %>%
+#  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 2, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 2, color = 'white')
+ft
+```
+
+### Number of births field
+
+```{r tt_births, echo = FALSE}
+df_tt <- data.frame(births = c('Single', 'Multiple', NA)) %>%
+  mutate(valid = fnCheck_births(.))
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    births = 'Number of Births',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .5) %>%
+  hline(part = "body", border = std_border) %>%
+#  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 2, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 2, color = 'white')
+ft
+```
+### Ventilation field
+
+```{r tt_ventilation, echo = FALSE}
+df_tt <- data.frame(ventilation = c('No', 'Yes', NA)) %>%
+  mutate(valid = fnCheck_ventilation(.))
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    ventilation = 'Invasive Ventilation',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .5) %>%
+  hline(part = "body", border = std_border) %>%
+#  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 2, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 2, color = 'white')
+ft
+```
+
+### Active labour field
+
+```{r tt_labour, echo = FALSE}
+df_tt <- data.frame(labour = c('No', NA, 'Yes')) %>%
+  mutate(valid = fnCheck_labour(.))
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    labour = 'Active Labour',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .5) %>%
+  hline(part = "body", border = std_border) %>%
+#  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 2, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 2, color = 'white')
+ft
+```
+
+### Place of birth field
+
+```{r tt_place, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    gestation = c('<26+6', '27 - 27+6', '28 - 29+6', '30 - 31+6', '32 - 33+6', NA),
+    weight = c('<800g', '<1500g', '>1500g', NA),
+    births = c('Single', 'Multiple', NA),
+    place = c('No', NA, 'Yes')
+  )) %>%
+  mutate(valid = fnCheck_place(.)) %>%
+  arrange(gestation, weight, births, place)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    gestation = 'Gestation Length',
+    weight = 'Birth Weight',
+    births = 'Number of Births',
+    place = 'Place of Birth',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .9) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 5, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 5, color = 'white')
+ft
+```
+
+### Place of birth field (exc. NA for gestation, weight and number of births)
+
+```{r tt_place_exc_na, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    gestation = c('<26+6', '27 - 27+6', '28 - 29+6', '30 - 31+6', '32 - 33+6', NA),
+    weight = c('<800g', '<1500g', '>1500g', NA),
+    births = c('Single', 'Multiple', NA),
+    place = c('No', NA, 'Yes')
+  )) %>%
+  mutate(valid = fnCheck_place(.)) %>%
+  arrange(gestation, weight, births, place)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt %>% 
+                  filter(!is.na(gestation) &
+                           !is.na(weight) &
+                           !is.na(births))) %>%
+  set_header_labels(
+    gestation = 'Gestation Length',
+    weight = 'Birth Weight',
+    births = 'Number of Births',
+    place = 'Place of Birth',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .9) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 5, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 5, color = 'white')
+ft
+```
+
+## Antenatal steroids section
+
+### Antenatal steroids given field
+
+```{r tt_steroids_rx, echo = FALSE}
+df_tt <- data.frame(steroids_rx = c('No', 'Yes', NA)) %>%
+  mutate(valid = fnCheck_steroids_rx(.))
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    steroids_rx = 'Antenatal steroids given',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .5) %>%
+  hline(part = "body", border = std_border) %>%
+#  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 2, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 2, color = 'white')
+ft
+```
+
+### Antenatal steroids doses field
+
+```{r tt_steroids_doses, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    steroids_rx = c('No', 'Yes', NA),
+    steroids_doses = c('0', '1', '2', NA)
+  )) %>%
+  mutate(valid = fnCheck_steroids_doses(.)) %>%
+  arrange(steroids_rx, steroids_doses)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    steroids_rx = 'Antenatal steroids given',
+    steroids_doses = 'Number of doses',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .9) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 3, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 3, color = 'white')
+ft
+```
+
+### Antenatal steroids administration optimisation possible
+
+```{r tt_steroids_opt_poss, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    steroids_rx = c('No', 'Yes', NA),
+    steroids_opt_poss = c('No', 'Yes', NA)
+  )) %>%
+  mutate(valid = fnCheck_steroids_opt_poss(.)) %>%
+  arrange(steroids_rx, steroids_opt_poss)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    steroids_rx = 'Antenatal steroids given',
+    steroids_opt_poss = 'Optimal Adminstration Possible',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .9) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 3, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 3, color = 'white')
+ft
+```
+
+### Antenatal steroids administration optimisation achieved
+
+The structure of this check is poorly coded on my part at the moment, but aside
+from that the current validity check does not take into account the doses, so an
+entry that has a mother in receipt of antibiotics but only one doses can still be
+counted as optimal.
+
+```{r tt_steroids_opt_act, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    steroids_rx = c('No', 'Yes', NA),
+    steroids_opt_poss = c('No', 'Yes', NA),
+    steroids_opt_act = c('No', 'Yes', NA)
+  )) %>%
+  mutate(valid = fnCheck_steroids_opt_act(.)) %>%
+  arrange(steroids_rx, steroids_opt_poss, steroids_opt_act)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    steroids_rx = 'Antenatal steroids given',
+    steroids_opt_poss = 'Optimal Adminstration Possible',
+    steroids_opt_act = 'Optimal Adminstration Achieved',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .9) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 4, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 4, color = 'white')
+ft
+```
+
+## Antenatal magnesium sulphate section
+
+### Antenatal magnesium sulphate given field
+
+```{r tt_mgso4_rx, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    gestation = c('<26+6', '27 - 27+6', '28 - 29+6', '30 - 31+6', '32 - 33+6', NA),
+    mgso4_rx = c('No', 'Yes', NA)
+  )) %>%
+  mutate(valid = fnCheck_mgso4_rx(.)) %>%
+  arrange(gestation, mgso4_rx)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    gestation = 'Gestation Length',
+    mgso4_rx = 'Antenatal MgSO4 given',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .5) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 3, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 3, color = 'white')
+ft
+```
+ 
+### Antenatal magnesium sulphate administration optimisation possible
+
+```{r tt_mgso4_opt_poss, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    gestation = c('<26+6', '27 - 27+6', '28 - 29+6', '30 - 31+6', '32 - 33+6', NA),
+    mgso4_rx = c('No', 'Yes', NA),
+    mgso4_opt_poss = c('No', 'Yes', NA)
+  )) %>%
+  mutate(valid = fnCheck_mgso4_opt_poss(.)) %>%
+  arrange(gestation, mgso4_rx, mgso4_opt_poss)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    gestation = 'Gestation Length',
+    mgso4_rx = 'Antenatal MgSO4 given',
+    mgso4_opt_act = 'Optimal Adminstration Possible',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .9) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 4, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 4, color = 'white')
+ft
+```
+
+### Antenatal magnesium sulphate administration optimisation achieved
+
+```{r tt_mgso4_opt_act, echo = FALSE}
+df_tt <- data.frame(
+  expand.grid(
+    gestation = c('<26+6', '27 - 27+6', '28 - 29+6', '30 - 31+6', '32 - 33+6', NA),
+    mgso4_rx = c('No', 'Yes', NA),
+    mgso4_opt_poss = c('No', 'Yes', NA),
+    mgso4_opt_act = c('No', 'Yes', NA)
+  )) %>%
+  mutate(valid = fnCheck_mgso4_opt_act(.)) %>%
+  arrange(gestation, mgso4_rx, mgso4_opt_act)
+
+std_border <- fp_border(color = "gray")
+
+ft <- flextable(df_tt) %>%
+  set_header_labels(
+    gestation = 'Gestation Length',
+    mgso4_rx = 'Antenatal MgSO4 given',
+    mgso4_opt_possible = 'Optimal Adminstration Possible',
+    mgso4_opt_act = 'Optimal Adminstration Achieved',
+    valid = 'Logic Validity') %>%
+  set_table_properties(layout = "autofit", width = .9) %>%
+  hline(part = "body", border = std_border) %>%
+  vline(part = "all", border = std_border) %>%
+  bold(bold = TRUE, part = "header") %>% 
+  bg(j = 5, bg = function(x){ifelse(x, 'forestgreen', 'red4')}) %>%
+  color(j = 5, color = 'white')
+ft
+```
