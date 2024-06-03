@@ -15,8 +15,8 @@
 library(tidyverse)
 library(readxl)
 
-fil_historic <- './input/HISTORIC_FEB_2024.CSV'
-dt_month <- as.Date('2024-03-01')
+fil_historic <- './input/HISTORIC_MAR_2024.CSV'
+dt_month <- as.Date('2024-04-01')
 dir_input <- './input/original'
 dir_output <- './output'
 
@@ -150,11 +150,11 @@ for(f in files){
   
   # Create the error data frame 
   df_errors <- df_cleaned %>% 
-    select(c(org_code, month, excel_row), starts_with('check_')) %>% 
-    select(-check_overall) %>%
+    dplyr::select(c(org_code, month, excel_row), starts_with('check_')) %>% 
+    dplyr::select(-check_overall) %>%
     pivot_longer(cols = c(4:NCOL(.)), names_to = 'validation_check_failed', values_to = 'validity') %>%
     filter(validity == FALSE) %>%
-    select(-validity)
+    dplyr::select(-validity)
 
   writeLines(sprintf('%s, %d, %d', 
                      org_code, 
@@ -264,11 +264,11 @@ df_cleaned <- fnProcessWorkbook(filename = f,
 
 # Create the error data frame 
 df_errors <- df_cleaned %>% 
-  select(c(org_code, month, excel_row), starts_with('check_')) %>% 
-  select(-check_overall) %>%
+  dplyr::select(c(org_code, month, excel_row), starts_with('check_')) %>% 
+  dplyr::select(-check_overall) %>%
   pivot_longer(cols = c(4:NCOL(.)), names_to = 'validation_check_failed', values_to = 'validity') %>%
   filter(validity == FALSE) %>%
-  select(-validity)
+  dplyr::select(-validity)
 
 df_output <- df_cleaned %>% 
   filter(check_overall == TRUE) %>%
