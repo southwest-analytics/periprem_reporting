@@ -104,7 +104,7 @@ fnProcessOrganisation <- function(df_subset, org_code, org_name, member_org_list
     mutate(month, 
            rx = eligible_intervention_rx_num,
            dnrx = eligible_intervention_rx_dem - eligible_intervention_rx_num)
-  plot_title <- 'PERIPrem Bundle: Optimisation Score [Total number of inerventions given / total number of optimal interventions]'
+  plot_title <- 'PERIPrem Bundle: Optimisation Score [Total number of interventions given / total number of optimal interventions]'
   xaxis <- 'Month'
   yaxis_line <- 'Optimisation Score'
   yaxis_bar <- 'Number of Interventions'
@@ -148,7 +148,7 @@ fnProcessOrganisation <- function(df_subset, org_code, org_name, member_org_list
     mutate(month, 
            rx = mgso4_rx_num,
            dnrx = mgso4_rx_dem - mgso4_rx_num)
-  plot_title <- "How many babies' mothers received ANY magnesium suplhate?"
+  plot_title <- "How many babies' mothers received ANY magnesium sulphate?"
   xaxis <- 'Month'
   yaxis_line <- 'Received Magnesium Sulphate'
   yaxis_bar <- 'Number of Mothers'

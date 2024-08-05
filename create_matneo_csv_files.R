@@ -111,7 +111,7 @@ df_matneo_sip %>%
   mutate(embm_rx_pct = embm_rx/(embm_rx + embm_dnrx), .after = embm_dnrx) %>%
   mutate(probiotics_rx_pct = probiotics_rx/(probiotics_rx + probiotics_dnrx), .after = probiotics_dnrx) %>%
   mutate(hydrocortisone_rx_pct = hydrocortisone_rx/(hydrocortisone_rx + hydrocortisone_dnrx), .after = hydrocortisone_dnrx) %>%
-  select(-c('icb_code', 'hin_code', 'financial_quarter')) %>%
+  dplyr::select(-c('icb_code', 'hin_code', 'financial_quarter')) %>%
   rename_with(.fn = ~c('Trust', 'Month', 
                        'Place - Eligible', 'Place - Received', 'Place - Did Not Receive', 'Place - % Received',
                        'Steroids - Eligible', 'Steroids - Received', 'Steroids - Did Not Receive', 'Steroids - % Received',
