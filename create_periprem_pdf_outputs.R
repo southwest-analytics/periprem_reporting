@@ -435,10 +435,13 @@ dir.create(ini_settings$Outputs$dir,
            showWarnings = FALSE, 
            recursive = TRUE)
 
+# Get the reporting month
+dt_month = as.Date(ini_settings$Inputs$month, format = '%Y-%m-%d')
+
 # * 1.2. Load location data ----
 df_locations <- read.csv(ini_settings$Inputs$locations)
 
-# * 1.2. Load PERIPrem data ----
+# * 1.3. Load PERIPrem data ----
 df_data <- read.csv(ini_settings$Inputs$data) %>%
   mutate(month = as.Date(month, tryFormats = c('%Y-%m-%d','%d/%m/%Y')))
 
@@ -451,7 +454,7 @@ for(org in org_list){
   org_name <- eval(parse(text = paste0('ini_settings$', org, '$name')))
   # Get the member organisation list for this organisation
   member_org_list <- eval(parse(text = eval(parse(text = paste0('ini_settings$', org, '$codes')))))
-  
+
   # Subset the data, group and summarise
   df_subset <- df_data %>% 
     filter(org_code %in% member_org_list &
@@ -465,7 +468,6 @@ for(org in org_list){
   df_subset = df_subset
   org_code = org
   org_name = org_name
-  dt_month = as.Date(ini_settings$Inputs$month, format = '%Y-%m-%d')
   member_org_list = member_org_list
 
   if(df_subset %>% filter(month == dt_month) %>% NROW!=0){
