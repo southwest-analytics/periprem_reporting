@@ -15,8 +15,8 @@
 library(tidyverse)
 library(readxl)
 
-fil_historic <- './input/HISTORIC_MAY_2024.CSV'
-dir_input <- './input/original'
+fil_historic <- './input/PERIPrem_data.csv'
+dir_input <- './input/updates'
 dir_output <- './output'
 
 source('periprem_reporting_functions.R')
@@ -143,7 +143,7 @@ for(f in files){
                                   dt_month,
                                   outdir = 'output')
   # Create the error output filename
-  fil_errors <- paste0('./', outdir, '/', org_code, '_', format(df_cleaned$month[1], '_%b_%Y_ERR.csv'))
+  fil_errors <- paste0('./', outdir, '/', org_code, toupper(format(df_cleaned$month[1], '_%b_%Y_ERR.csv')))
   
   # Create the error data frame 
   df_errors <- df_cleaned %>% 
@@ -153,7 +153,8 @@ for(f in files){
     filter(validity == FALSE) %>%
     dplyr::select(-validity)
 
-  writeLines(sprintf('%s, %d, %d', 
+  writeLines(sprintf('%s, %s, %d, %d', 
+                     toupper(format(dt_month, '%b %y')),
                      org_code, 
                      df_cleaned %>% filter(check_overall==TRUE) %>% NROW(),
                      df_cleaned %>% filter(check_overall==FALSE) %>% NROW()),fil_process_log)
@@ -246,7 +247,7 @@ df_historic <- df_historic %>%
   bind_rows(df_output) %>%
   arrange(org_code, month)
 
-fil_historic <- paste0('./', outdir, '/HISTORIC_', toupper(format(dt_month, '%b_%Y')), '.csv')
+fil_historic <- paste0('./', outdir, '/PERIPrem_data.csv')
 write.csv(df_historic, fil_historic, row.names = FALSE)
 
 stop()
