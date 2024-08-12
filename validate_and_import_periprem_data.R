@@ -15,8 +15,7 @@
 library(tidyverse)
 library(readxl)
 
-fil_historic <- './input/HISTORIC_APR_2024.CSV'
-dt_month <- as.Date('2024-05-01')
+fil_historic <- './input/HISTORIC_MAY_2024.CSV'
 dir_input <- './input/original'
 dir_output <- './output'
 
@@ -28,16 +27,6 @@ fnProcessWorkbook <- function(filename, sheetname, org_code, dt_month, outdir){
                    col_names = FALSE) %>% 
     # Add Excel row number
     mutate(excel_row = as.integer(row.names(.)), .before = 1)
-  
-  # Extract trust name (Cell H3)
-  trust_name <- df[3, (8+1)]
-  
-  # Extract perinatal leads (Cell P3)
-  perinatal_leads <- df[3, (16+1)]
-
-  # Removed as month seems to be an issue for users
-  # # Extract month (Cell B3)
-  # dt_month <- as.Date(paste0('01 ', df[3, (2+1)]), format = '%d %B %Y')
   
   # Extract data entry cells
   df <- df[10:NROW(df),1:(24+1)] %>% 
@@ -136,10 +125,18 @@ df_combined <- data.frame()
 
 # Iterate through the list of file in the input directory
 for(f in files){
-  # Get the org_code (Acute Trust short code) from the filename 
-  # NB: This means the files need to named correctly and this should be checked before 
-  #     running this script
-  org_code <- str_replace(str_sub(f, start = str_locate(f, ' - ')[2]+1), '.xlsx$', '')
+
+  # The org_code and month will be extracted from the filename
+  # this means the structure of the filename is crucial it should *always* be in the format
+  # MMM YYYY - TTT[T].xlsx
+  # e.g. "JUN 2024 - RDUE.xlsx" or "SEP 2024 - TOR.xlsx"
+
+  # Extract trust from filename
+  org_code <- gsub('.xlsx', '', str_sub(basename(f), start = 12))
+  
+  # Extract month from filename
+  dt_month <- as.Date(paste0('01', str_sub(basename(f), start = 1, end = 8)), format = '%d %b %Y')
+  
   df_cleaned <- fnProcessWorkbook(filename = f,
                                   sheetname = 'Tab 2 Data ONLY EDIT THIS TAB',
                                   org_code,
@@ -237,9 +234,14 @@ df_output <- df_combined %>%
   ) %>% 
   ungroup()
 
-# 3. Add the current data to the historic data ----
-# ─────────────────────────────────────────────────
+# 3. Delete existing data from historic data ----
+# ───────────────────────────────────────────────
+df_historic <- df_historic %>% 
+  anti_join(df_output %>% distinct(org_code, month),
+            by = c('org_code', 'month'))
 
+# 4. Add the current data to the historic data ----
+# ─────────────────────────────────────────────────
 df_historic <- df_historic %>% 
   bind_rows(df_output) %>%
   arrange(org_code, month)
@@ -249,7 +251,7 @@ write.csv(df_historic, fil_historic, row.names = FALSE)
 
 stop()
 
-# 4. Validate and process current data ----
+# 5. Validate and process current data ----
 # ─────────────────────────────────────────
 
 f <- './temp/MAY 2023 -YEO.xlsx'

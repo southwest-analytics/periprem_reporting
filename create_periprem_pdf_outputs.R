@@ -454,7 +454,8 @@ for(org in org_list){
   
   # Subset the data, group and summarise
   df_subset <- df_data %>% 
-    filter(org_code %in% member_org_list) %>%
+    filter(org_code %in% member_org_list &
+             month <= dt_month) %>%
     dplyr::select(-org_code) %>%
     group_by(month) %>%
     summarise(across(everything(), .fns = \(x) sum(x, na.rm = TRUE))) %>%
