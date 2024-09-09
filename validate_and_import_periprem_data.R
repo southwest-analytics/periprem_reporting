@@ -15,8 +15,8 @@
 library(tidyverse)
 library(readxl)
 
-fil_historic <- './input/PERIPrem_data.csv'
-dir_input <- './input/updates'
+fil_historic <- './input/updates/refresh/PERIPrem_data.csv'
+dir_input <- './input/updates/refresh'
 dir_output <- './output'
 
 source('periprem_reporting_functions.R')

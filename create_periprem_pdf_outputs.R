@@ -24,6 +24,7 @@ library(ggrepel)
 library(scales)
 library(sisal)
 library(gridExtra)
+library(pdftools)
 library(ini)
 
 fnCreateLinePlot <- function(df_plotdata, plot_title, xaxis, yaxis, target = NULL){
