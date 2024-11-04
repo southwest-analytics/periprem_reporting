@@ -15,8 +15,8 @@
 library(tidyverse)
 library(readxl)
 
-fil_historic <- './input/updates/refresh/PERIPrem_data.csv'
-dir_input <- './input/updates/refresh'
+fil_historic <- './input/OUTPUT_PERIPrem_data.csv'
+dir_input <- './input/'
 dir_output <- './output'
 
 source('periprem_reporting_functions.R')
@@ -119,6 +119,9 @@ writeLines(sprintf('org_code, valid_lines, invalid_lines'), fil_process_log)
 
 # Get a list of the input files in the input directory
 files <- list.files(path = dir_input, pattern = '.xlsx$', full.names = TRUE)
+
+# Lose the checksum file from the file list
+files <- files[files!='./input/PERIPrem CheckSum.xlsx']
 
 # Set up a blank data frame for the results
 df_combined <- data.frame()
